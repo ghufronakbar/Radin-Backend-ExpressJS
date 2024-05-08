@@ -1,0 +1,5 @@
+exports.account_controller = require('./account_controller')
+exports.product_controller = require('./product_controller')
+exports.order_controller = require('./order_controller')
+exports.handle_controller = require('./handle_controller')
+exports.statistic_controller = require('./statistic_controller')
