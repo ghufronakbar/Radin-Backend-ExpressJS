@@ -7,6 +7,13 @@ module.exports = function (app) {
   let api_user = require("./controllers/user");
 
 
+
+  //LOGIN
+
+  
+  app.route(`/api/admin/login`)
+    .post(api_admin.account_controller.login);
+
   //MENU CONTROLLER
 
   app.route(`/api/admin/products`)

@@ -13,7 +13,7 @@ app.use(cors());
 var routes = require("./routes");
 routes(app);
 
-app.use('/images/menu', express.static(path.join(__dirname, 'images/menu')));
+app.use('/images/product', express.static(path.join(__dirname, 'images/product')));
 
 app.listen(5000, () => {
   console.log(`Server started on port`);

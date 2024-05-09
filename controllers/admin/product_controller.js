@@ -15,7 +15,7 @@ const fs = require('fs');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'images/menu/');
+        cb(null, 'images/product/');
     },
     filename: function (req, file, cb) {
         // Mendapatkan ekstensi file

@@ -14,7 +14,7 @@ exports.allOrder = function (req, res) {
     connection.query(`SELECT h.id_history, h.id_user, h.total, h.address, h.user_notes, h.admin_notes, h.status,
                         h.ordered_at, h.finished_at,
                         u.id_user, u.fullname, u.email, u.phone,
-                        i.id_item_history, i.product_name, i.type, i.price, i.amount
+                        i.id_item_history, i.name_product, i.type, i.price, i.amount
                         FROM histories AS h 
                         JOIN users AS u ON h.id_user = u.id_user
                         JOIN item_histories AS i ON i.id_history = h.id_history 
@@ -31,7 +31,7 @@ exports.allOrder = function (req, res) {
                         // Jika sudah ada, tambahkan item ke array item_history
                         existingHistory.item_history.push({
                             id_item_history: row.id_item_history,
-                            product_name: row.product_name,
+                            name_product: row.name_product,
                             type: row.type,
                             price: row.price,
                             amount: row.amount
@@ -53,7 +53,7 @@ exports.allOrder = function (req, res) {
                             finished_at: row.finished_at,
                             item_history: [{
                                 id_item_history: row.id_item_history,
-                                product_name: row.product_name,
+                                name_product: row.name_product,
                                 type: row.type,
                                 price: row.price,
                                 amount: row.amount
@@ -77,7 +77,7 @@ exports.orderId = function (req, res) {
     connection.query(`SELECT h.id_history, h.id_user, h.total, h.address, h.user_notes, h.admin_notes, h.status,
                         h.ordered_at, h.finished_at,
                         u.id_user, u.fullname, u.email, u.phone,
-                        i.id_item_history, i.product_name, i.type, i.price, i.amount
+                        i.id_item_history, i.name_product, i.type, i.price, i.amount
                         FROM histories AS h 
                         JOIN users AS u ON h.id_user = u.id_user
                         JOIN item_histories AS i ON i.id_history = h.id_history WHERE h.id_history=?`, [id_history],
@@ -93,7 +93,7 @@ exports.orderId = function (req, res) {
                         // Jika sudah ada, tambahkan item ke array item_history
                         existingHistory.item_history.push({
                             id_item_history: row.id_item_history,
-                            product_name: row.product_name,
+                            name_product: row.name_product,
                             type: row.type,
                             price: row.price,
                             amount: row.amount
@@ -115,7 +115,7 @@ exports.orderId = function (req, res) {
                             finished_at: row.finished_at,
                             item_history: [{
                                 id_item_history: row.id_item_history,
-                                product_name: row.product_name,
+                                name_product: row.name_product,
                                 type: row.type,
                                 price: row.price,
                                 amount: row.amount
@@ -136,7 +136,7 @@ exports.allOrderPending = function (req, res) {
     connection.query(`SELECT h.id_history, h.id_user, h.total, h.address, h.user_notes, h.admin_notes, h.status,
     h.ordered_at, h.finished_at,
                         u.id_user, u.fullname, u.email, u.phone,
-                        i.id_item_history, i.product_name, i.type, i.price, i.amount
+                        i.id_item_history, i.name_product, i.type, i.price, i.amount
                         FROM histories AS h 
                         JOIN users AS u ON h.id_user = u.id_user
                         JOIN item_histories AS i ON i.id_history = h.id_history WHERE h.status=0  ORDER BY h.id_history DESC`,
@@ -152,7 +152,7 @@ exports.allOrderPending = function (req, res) {
                         // Jika sudah ada, tambahkan item ke array item_history
                         existingHistory.item_history.push({
                             id_item_history: row.id_item_history,
-                            product_name: row.product_name,
+                            name_product: row.name_product,
                             type: row.type,
                             price: row.price,
                             amount: row.amount
@@ -174,7 +174,7 @@ exports.allOrderPending = function (req, res) {
                             finished_at: row.finished_at,
                             item_history: [{
                                 id_item_history: row.id_item_history,
-                                product_name: row.product_name,
+                                name_product: row.name_product,
                                 type: row.type,
                                 price: row.price,
                                 amount: row.amount
@@ -196,7 +196,7 @@ exports.allOrderCancelByUser = function (req, res) {
     connection.query(`SELECT h.id_history, h.id_user, h.total, h.address, h.user_notes, h.admin_notes, h.status,
     h.ordered_at, h.finished_at,
                         u.id_user, u.fullname, u.email, u.phone,
-                        i.id_item_history, i.product_name, i.type, i.price, i.amount
+                        i.id_item_history, i.name_product, i.type, i.price, i.amount
                         FROM histories AS h 
                         JOIN users AS u ON h.id_user = u.id_user
                         JOIN item_histories AS i ON i.id_history = h.id_history WHERE h.status=1  ORDER BY h.id_history DESC`,
@@ -212,7 +212,7 @@ exports.allOrderCancelByUser = function (req, res) {
                         // Jika sudah ada, tambahkan item ke array item_history
                         existingHistory.item_history.push({
                             id_item_history: row.id_item_history,
-                            product_name: row.product_name,
+                            name_product: row.name_product,
                             type: row.type,
                             price: row.price,
                             amount: row.amount
@@ -234,7 +234,7 @@ exports.allOrderCancelByUser = function (req, res) {
                             finished_at: row.finished_at,
                             item_history: [{
                                 id_item_history: row.id_item_history,
-                                product_name: row.product_name,
+                                name_product: row.name_product,
                                 type: row.type,
                                 price: row.price,
                                 amount: row.amount
@@ -255,7 +255,7 @@ exports.allOrderCancelByAdmin = function (req, res) {
     connection.query(`SELECT h.id_history, h.id_user, h.total, h.address, h.user_notes, h.admin_notes, h.status,
     h.ordered_at, h.finished_at,
                         u.id_user, u.fullname, u.email, u.phone,
-                        i.id_item_history, i.product_name, i.type, i.price, i.amount
+                        i.id_item_history, i.name_product, i.type, i.price, i.amount
                         FROM histories AS h 
                         JOIN users AS u ON h.id_user = u.id_user
                         JOIN item_histories AS i ON i.id_history = h.id_history WHERE h.status=2  ORDER BY h.id_history DESC`,
@@ -271,7 +271,7 @@ exports.allOrderCancelByAdmin = function (req, res) {
                         // Jika sudah ada, tambahkan item ke array item_history
                         existingHistory.item_history.push({
                             id_item_history: row.id_item_history,
-                            product_name: row.product_name,
+                            name_product: row.name_product,
                             type: row.type,
                             price: row.price,
                             amount: row.amount
@@ -293,7 +293,7 @@ exports.allOrderCancelByAdmin = function (req, res) {
                             finished_at: row.finished_at,
                             item_history: [{
                                 id_item_history: row.id_item_history,
-                                product_name: row.product_name,
+                                name_product: row.name_product,
                                 type: row.type,
                                 price: row.price,
                                 amount: row.amount
@@ -314,7 +314,7 @@ exports.allOrderPaid = function (req, res) {
     connection.query(`SELECT h.id_history, h.id_user, h.total, h.address, h.user_notes, h.admin_notes, h.status,
     h.ordered_at, h.finished_at,
                         u.id_user, u.fullname, u.email, u.phone,
-                        i.id_item_history, i.product_name, i.type, i.price, i.amount
+                        i.id_item_history, i.name_product, i.type, i.price, i.amount
                         FROM histories AS h 
                         JOIN users AS u ON h.id_user = u.id_user
                         JOIN item_histories AS i ON i.id_history = h.id_history WHERE h.status=3  ORDER BY h.id_history DESC`,
@@ -330,7 +330,7 @@ exports.allOrderPaid = function (req, res) {
                         // Jika sudah ada, tambahkan item ke array item_history
                         existingHistory.item_history.push({
                             id_item_history: row.id_item_history,
-                            product_name: row.product_name,
+                            name_product: row.name_product,
                             type: row.type,
                             price: row.price,
                             amount: row.amount
@@ -352,7 +352,7 @@ exports.allOrderPaid = function (req, res) {
                             finished_at: row.finished_at,
                             item_history: [{
                                 id_item_history: row.id_item_history,
-                                product_name: row.product_name,
+                                name_product: row.name_product,
                                 type: row.type,
                                 price: row.price,
                                 amount: row.amount
@@ -374,7 +374,7 @@ exports.allorderprocess = function (req, res) {
     connection.query(`SELECT h.id_history, h.id_user, h.total, h.address, h.user_notes, h.admin_notes, h.status,
     h.ordered_at, h.finished_at,
                         u.id_user, u.fullname, u.email, u.phone,
-                        i.id_item_history, i.product_name, i.type, i.price, i.amount
+                        i.id_item_history, i.name_product, i.type, i.price, i.amount
                         FROM histories AS h 
                         JOIN users AS u ON h.id_user = u.id_user
                         JOIN item_histories AS i ON i.id_history = h.id_history WHERE h.status=4  ORDER BY h.id_history DESC`,
@@ -390,7 +390,7 @@ exports.allorderprocess = function (req, res) {
                         // Jika sudah ada, tambahkan item ke array item_history
                         existingHistory.item_history.push({
                             id_item_history: row.id_item_history,
-                            product_name: row.product_name,
+                            name_product: row.name_product,
                             type: row.type,
                             price: row.price,
                             amount: row.amount
@@ -412,7 +412,7 @@ exports.allorderprocess = function (req, res) {
                             finished_at: row.finished_at,
                             item_history: [{
                                 id_item_history: row.id_item_history,
-                                product_name: row.product_name,
+                                name_product: row.name_product,
                                 type: row.type,
                                 price: row.price,
                                 amount: row.amount
@@ -434,7 +434,7 @@ exports.allOrderReady = function (req, res) {
     connection.query(`SELECT h.id_history, h.id_user, h.total, h.address, h.user_notes, h.admin_notes, h.status,
     h.ordered_at, h.finished_at,
                         u.id_user, u.fullname, u.email, u.phone,
-                        i.id_item_history, i.product_name, i.type, i.price, i.amount
+                        i.id_item_history, i.name_product, i.type, i.price, i.amount
                         FROM histories AS h 
                         JOIN users AS u ON h.id_user = u.id_user
                         JOIN item_histories AS i ON i.id_history = h.id_history WHERE h.status=5  ORDER BY h.id_history DESC`,
@@ -450,7 +450,7 @@ exports.allOrderReady = function (req, res) {
                         // Jika sudah ada, tambahkan item ke array item_history
                         existingHistory.item_history.push({
                             id_item_history: row.id_item_history,
-                            product_name: row.product_name,
+                            name_product: row.name_product,
                             type: row.type,
                             price: row.price,
                             amount: row.amount
@@ -472,7 +472,7 @@ exports.allOrderReady = function (req, res) {
                             finished_at: row.finished_at,
                             item_history: [{
                                 id_item_history: row.id_item_history,
-                                product_name: row.product_name,
+                                name_product: row.name_product,
                                 type: row.type,
                                 price: row.price,
                                 amount: row.amount
@@ -493,7 +493,7 @@ exports.allOrderDone = function (req, res) {
     connection.query(`SELECT h.id_history, h.id_user, h.total, h.address, h.user_notes, h.admin_notes, h.status,
     h.ordered_at, h.finished_at,
                         u.id_user, u.fullname, u.email, u.phone,
-                        i.id_item_history, i.product_name, i.type, i.price, i.amount
+                        i.id_item_history, i.name_product, i.type, i.price, i.amount
                         FROM histories AS h 
                         JOIN users AS u ON h.id_user = u.id_user
                         JOIN item_histories AS i ON i.id_history = h.id_history WHERE h.status=6  ORDER BY h.id_history DESC`,
@@ -509,7 +509,7 @@ exports.allOrderDone = function (req, res) {
                         // Jika sudah ada, tambahkan item ke array item_history
                         existingHistory.item_history.push({
                             id_item_history: row.id_item_history,
-                            product_name: row.product_name,
+                            name_product: row.name_product,
                             type: row.type,
                             price: row.price,
                             amount: row.amount
@@ -531,7 +531,7 @@ exports.allOrderDone = function (req, res) {
                             finished_at: row.finished_at,
                             item_history: [{
                                 id_item_history: row.id_item_history,
-                                product_name: row.product_name,
+                                name_product: row.name_product,
                                 type: row.type,
                                 price: row.price,
                                 amount: row.amount

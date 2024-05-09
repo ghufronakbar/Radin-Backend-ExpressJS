@@ -15,8 +15,8 @@ exports.login = function (req, res) {
         password: req.body.password
     }
 
-    var query = "SELECT id_admin, fullname, email, phone type FROM ?? WHERE ??=? AND ??=?";
-    var table = ["admin", "password", md5(post.password), "email", post.email];
+    var query = "SELECT id_admin FROM ?? WHERE ??=? AND ??=?";
+    var table = ["admins", "password", md5(post.password), "email", post.email];
 
     console.log(post)
 
@@ -60,7 +60,7 @@ exports.login = function (req, res) {
                             success: true,
                             message: "Token JWT Generated!",
                             token: token,
-                            currUser: data.id_instances
+                            currUser: data.id_admin
                         });
                     }
                 });
