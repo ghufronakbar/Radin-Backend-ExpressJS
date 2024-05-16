@@ -67,14 +67,18 @@ module.exports = function (app) {
   app.route('/api/user/cart')
     .get(verifikasiUser, api_user.cart_controller.cartUser);
 
-    app.route('/api/user/cart/item/setamount/:id_cart_item')
+  app.route('/api/user/cart/item/setamount/:id_cart_item')
     .put(verifikasiUser, api_user.cart_controller.cartSetAmount);
 
-    app.route('/api/user/cart/item/delete/:id_cart_item')
+  app.route('/api/user/cart/item/delete/:id_cart_item')
     .delete(verifikasiUser, api_user.cart_controller.cartDeleteItem);
 
-    app.route('/api/user/cart/item/add-to-cart')
+  app.route('/api/user/cart/item/add-to-cart')
     .post(verifikasiUser, api_user.cart_controller.addToCart);
 
+
+  // CHECKOUT CONTROLLER
+  app.route('/api/user/checkout')
+    .post(verifikasiUser, api_user.checkout_controller.checkoutCart);
 };
 

@@ -47,14 +47,20 @@ exports.cartUser = async (req, res) => {
             } else if (rows.length > 0) {
                 const result = rows.reduce((acc, row) => {
                     const { id_cart, id_user, ...item } = row;
+                    item.checkoutable = item.amount <= item.stock;
                     if (!acc[id_cart]) {
                         acc[id_cart] = {
                             id_cart,
                             id_user,
+                            checkoutable: true, // assume true initially
                             cart_item: []
                         };
                     }
                     acc[id_cart].cart_item.push(item);
+                    // Update checkoutable status for the whole cart
+                    if (!item.checkoutable) {
+                        acc[id_cart].checkoutable = false;
+                    }
                     return acc;
                 }, {});
                 res.status(200).json({
@@ -66,12 +72,13 @@ exports.cartUser = async (req, res) => {
     });
 };
 
+
 exports.cartSetAmount = async (req, res) => {
     const amount = parseInt(req.body.amount);
     const id_cart_item = req.params.id_cart_item;
-    const query_select_item = `SELECT * FROM cart_items WHERE id_cart_item=?`;
 
-    await connection.query(query_select_item, [id_cart_item], function (error, rows, fields) {
+    const query_select_item = `SELECT * FROM cart_items WHERE id_cart_item=?`;
+    connection.query(query_select_item, [id_cart_item], function (error, rows, fields) {
         if (error) {
             console.log(error);
             res.status(500).json({ status: 500, message: "Internal Server Error" });
