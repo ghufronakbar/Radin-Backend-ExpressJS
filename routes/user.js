@@ -5,13 +5,26 @@ const verifikasiUser = require("../middleware/verifikasi-user");
 module.exports = function (app) {
   let api_user = require("../controllers/user");
 
-  //LOGIN
+  // ACCOUNT CONTROLLER
+
+  app.route(`/api/user/register`)
+    .post(api_user.account_controller.register);
 
   app.route(`/api/user/login`)
-    .post(api_user.auth_controller.login);
+    .post(api_user.account_controller.login);
 
-  app.route('/api/user/check/:token')
-    .get(api_user.auth_controller.check_user);
+  app.route('/api/user/check')
+    .get(verifikasiUser, api_user.account_controller.check_user); //SEPERTINYA TIDAK PERLU KARENA SUDAH ADA MIDDLEWARE YANG MENANGANI UNTUK SETIAP FUNGSI
+
+  app.route('/api/user/profile')
+    .get(verifikasiUser, api_user.account_controller.profile);
+
+  app.route('/api/user/profile/edit')
+    .put(verifikasiUser, api_user.account_controller.editProfile);
+
+  app.route('/api/user/profile/password')
+    .put(verifikasiUser, api_user.account_controller.editPassword);
+
 
 
   //PRODUCT CONTROLLER
@@ -81,10 +94,10 @@ module.exports = function (app) {
   app.route('/api/user/checkout')
     .post(verifikasiUser, api_user.checkout_controller.checkoutCart);
 
-    app.route('/api/user/confirm/:id_history')
+  app.route('/api/user/confirm/:id_history')
     .put(verifikasiUser, api_user.checkout_controller.confirmOrder);
 
-    app.route('/api/user/cancel/:id_history')
+  app.route('/api/user/cancel/:id_history')
     .put(verifikasiUser, api_user.checkout_controller.cancelOrder);
 };
 
