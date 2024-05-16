@@ -15,8 +15,6 @@ module.exports = function (app) {
 
 
   //PRODUCT CONTROLLER
-
-  //RECOMMENDED
   app.route('/api/user/products/recommended')
     .get(verifikasiUser, api_user.product_controller.product_recommended);
 
@@ -29,9 +27,45 @@ module.exports = function (app) {
   app.route('/api/user/products/recommended/buah')
     .get(verifikasiUser, api_user.product_controller.product_buah);
 
-    app.route('/api/user/product/:id_product')
+  app.route('/api/user/product/:id_product')
     .get(verifikasiUser, api_user.product_controller.product_id);
 
+
+  // ORDER CONTROLLER
+  app.route('/api/user/orders')
+    .get(verifikasiUser, api_user.order_controller.orderAll);
+
+  app.route('/api/user/orders/pending')
+    .get(verifikasiUser, api_user.order_controller.orderPending);
+
+  app.route('/api/user/orders/pending')
+    .get(verifikasiUser, api_user.order_controller.orderPending);
+
+  app.route('/api/user/orders/cancel-by-user')
+    .get(verifikasiUser, api_user.order_controller.orderCBU);
+
+  app.route('/api/user/orders/cancel-by-admin')
+    .get(verifikasiUser, api_user.order_controller.orderCBA);
+
+  app.route('/api/user/orders/paid')
+    .get(verifikasiUser, api_user.order_controller.orderPaid);
+
+  app.route('/api/user/orders/process')
+    .get(verifikasiUser, api_user.order_controller.orderProcess);
+
+  app.route('/api/user/orders/ready')
+    .get(verifikasiUser, api_user.order_controller.orderReady);
+
+  app.route('/api/user/orders/done')
+    .get(verifikasiUser, api_user.order_controller.orderDone);
+
+  app.route('/api/user/order/:id_history')
+    .get(verifikasiUser, api_user.order_controller.orderId);
+
+
+  // CART CONTROLLER
+  app.route('/api/user/cart')
+    .get(verifikasiUser, api_user.cart_controller.cartUser);
 
 
 

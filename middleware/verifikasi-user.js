@@ -19,6 +19,7 @@ function verifikasiUser(req, res, next) {
         if (decoded.exp && decoded.exp < currentTime) {
           return res.status(401).send({ auth: false, message: "Token telah kadaluarsa!" });
         }
+        
         req.decoded = decoded; // Menyimpan data decoded ke dalam req untuk penggunaan selanjutnya
         next(); // Lanjutkan ke middleware/route selanjutnya
       }
