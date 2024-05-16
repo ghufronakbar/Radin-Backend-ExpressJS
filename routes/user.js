@@ -80,5 +80,11 @@ module.exports = function (app) {
   // CHECKOUT CONTROLLER
   app.route('/api/user/checkout')
     .post(verifikasiUser, api_user.checkout_controller.checkoutCart);
+
+    app.route('/api/user/confirm/:id_history')
+    .put(verifikasiUser, api_user.checkout_controller.confirmOrder);
+
+    app.route('/api/user/cancel/:id_history')
+    .put(verifikasiUser, api_user.checkout_controller.cancelOrder);
 };
 

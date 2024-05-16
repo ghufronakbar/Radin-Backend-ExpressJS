@@ -52,12 +52,11 @@ exports.cartUser = async (req, res) => {
                         acc[id_cart] = {
                             id_cart,
                             id_user,
-                            checkoutable: true, // assume true initially
+                            checkoutable: true,
                             cart_item: []
                         };
                     }
-                    acc[id_cart].cart_item.push(item);
-                    // Update checkoutable status for the whole cart
+                    acc[id_cart].cart_item.push(item);                    
                     if (!item.checkoutable) {
                         acc[id_cart].checkoutable = false;
                     }

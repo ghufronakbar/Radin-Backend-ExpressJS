@@ -12,7 +12,6 @@ const crypto = require('crypto');
 const fs = require('fs');
 
 
-
 exports.checkoutCart = async (req, res) => {
     const id_user = req.decoded.id_user;
     const address = req.body.address
@@ -20,17 +19,17 @@ exports.checkoutCart = async (req, res) => {
     let total = 0
     let now = new Date();
     let date_time =
-      now.getFullYear() +
-      "-" +
-      ("0" + (now.getMonth() + 1)).slice(-2) +
-      "-" +
-      ("0" + now.getDate()).slice(-2) +
-      " " +
-      ("0" + now.getHours()).slice(-2) +
-      ":" +
-      ("0" + now.getMinutes()).slice(-2) +
-      ":" +
-      ("0" + now.getSeconds()).slice(-2);
+        now.getFullYear() +
+        "-" +
+        ("0" + (now.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + now.getDate()).slice(-2) +
+        " " +
+        ("0" + now.getHours()).slice(-2) +
+        ":" +
+        ("0" + now.getMinutes()).slice(-2) +
+        ":" +
+        ("0" + now.getSeconds()).slice(-2);
     const qValidationItem = `SELECT * FROM cart_items WHERE id_cart=?`
     connection.query(qValidationItem, [id_user],
         function (error, rows, result) {
@@ -78,7 +77,7 @@ exports.checkoutCart = async (req, res) => {
                                                             let id_product = rows[i].id_product
                                                             let stock = rows[i].stock
                                                             let set_stock = stock - amount
-                                                            total = total + (price * amount)                                                            
+                                                            total = total + (price * amount)
 
                                                             let qItemHistory = `INSERT INTO item_histories(id_history,name_product,type,price,amount) VALUES (?,?,?,?,?)`
                                                             connection.query(qItemHistory, [iHistory, product_name, type, price, amount],
@@ -123,10 +122,10 @@ exports.checkoutCart = async (req, res) => {
                                                                             }
                                                                         }
                                                                     )
-                                                                 
+
                                                                 }
                                                             }
-                                                        )                                                        
+                                                        )
                                                     }
                                                 }
                                             )
@@ -137,6 +136,49 @@ exports.checkoutCart = async (req, res) => {
                         }
                     )
                 }
+            }
+        }
+    )
+}
+
+
+exports.confirmOrder = async (req, res) => {
+    const id_history = req.params.id_history
+    connection.query(`UPDATE histories SET status=3 WHERE id_history=?`, [id_history],
+        function (error, rows, result) {
+            if (error) {
+                console.log(error);
+                res.status(500).json({ status: 500, message: "Internal Server Error" });
+            } else {
+                res.status(200).json({ status: 200, message: "Order paid" });
+            }
+        }
+    )
+}
+
+
+exports.cancelOrder = async (req, res) => {
+    let now = new Date();
+    let date_time =
+        now.getFullYear() +
+        "-" +
+        ("0" + (now.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + now.getDate()).slice(-2) +
+        " " +
+        ("0" + now.getHours()).slice(-2) +
+        ":" +
+        ("0" + now.getMinutes()).slice(-2) +
+        ":" +
+        ("0" + now.getSeconds()).slice(-2);
+    const id_history = req.params.id_history
+    connection.query(`UPDATE histories SET status=1, finished_at=? WHERE id_history=?`, [date_time,id_history],
+        function (error, rows, result) {
+            if (error) {
+                console.log(error);
+                res.status(500).json({ status: 500, message: "Internal Server Error" });
+            } else {
+                res.status(200).json({ status: 200, message: "Order cancelled" });
             }
         }
     )
