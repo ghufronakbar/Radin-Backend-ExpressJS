@@ -10,8 +10,12 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //routes
-var routes = require("./routes");
-routes(app);
+var routesAdmin = require("./routes/admin");
+routesAdmin(app);
+
+
+var routesUser = require("./routes/user");
+routesUser(app);
 
 app.use('/images/product', express.static(path.join(__dirname, 'images/product')));
 

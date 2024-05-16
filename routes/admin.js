@@ -3,14 +3,10 @@
 // const verifikasi = require("./middleware/verifikasi");
 
 module.exports = function (app) {
-  let api_admin = require("./controllers/admin");
-  let api_user = require("./controllers/user");
-
-
+  let api_admin = require("../controllers/admin");  
 
   //LOGIN
 
-  
   app.route(`/api/admin/login`)
     .post(api_admin.account_controller.login);
 
