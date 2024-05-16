@@ -155,10 +155,9 @@ exports.orderDone = async (req, res) => {
 }
 
 
-exports.orderId = async (req, res) => {
-    const id_user = req.decoded.id_user;
+exports.orderId = async (req, res) => {    
     const id_history = req.params.id_history
-    await connection.query(`SELECT * FROM histories WHERE id_user=? AND id_history=?`, [id_user,id_history],
+    await connection.query(`SELECT * FROM histories WHERE  id_history=?`, [id_history],
         function (error, rows, fields) {
             if (error) {
                 console.log(error)
