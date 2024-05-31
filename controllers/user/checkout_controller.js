@@ -39,7 +39,7 @@ exports.checkoutCart = async (req, res) => {
             } else {
                 const validation_cart = rows.length
                 if (!validation_cart) {
-                    res.status(400).json({ status: 400, message: "Cannot checkout an empty cart" });
+                    return res.status(400).json({ status: 400, message: "Cannot checkout an empty cart" });
                 } else {
                     const qItemCart = `SELECT i.id_cart_item, i.id_product, i.amount, i.id_cart,
                                         p.product_name, p.price, p.stock, p.type
@@ -52,6 +52,17 @@ exports.checkoutCart = async (req, res) => {
                                 console.log(error);
                                 return res.status(500).json({ status: 500, message: "Internal Server Error" });
                             } else {
+
+                                // VALIDASI STOCK UNTUK TIAP AMOUNT
+                                let validateAmount
+                                let validateStock
+                                for (let x = 0; x < rows.length; x++) {
+                                    validateAmount = rows[x].amount
+                                    validateStock = rows[x].stock
+                                    if (validateAmount > validateStock) {
+                                        return res.status(400).json({ status: 400, message: `Amount of product can't be higher than stock` })
+                                    }
+                                }
                                 const qHistory = `INSERT INTO histories (id_user, address, user_notes,status, ordered_at) VALUES(?,?,?,?,?)`
                                 const vHistory = [id_user, address, user_notes, 0, date_time]
                                 connection.query(qHistory, vHistory,
@@ -102,8 +113,8 @@ exports.checkoutCart = async (req, res) => {
                                                         }
                                                         if (address) {
                                                             total = total + 5000 //SHIPPING COST
-                                                        }const randomPrice = Math.floor(Math.random() * 100);
-                                                        total = total+randomPrice
+                                                        } const randomPrice = Math.floor(Math.random() * 100);
+                                                        total = total + randomPrice
                                                         const qTotalHistory = `UPDATE histories SET total=? WHERE id_history=?`
                                                         const vTotalHistory = [total, iHistory]
                                                         connection.query(qTotalHistory, vTotalHistory,
