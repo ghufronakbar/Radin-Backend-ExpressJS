@@ -76,20 +76,26 @@ exports.cartSetAmount = async (req, res) => {
   const amount = parseInt(req.body.amount);
   const id_cart_item = req.body.id_cart_item;
 
-  const query_select_item = `SELECT * FROM cart_items WHERE id_cart_item=?`;
-  connection.query(
-    query_select_item,
-    [id_cart_item],
+  const query_select_item = `SELECT i.*, p.* FROM cart_items AS i 
+                            JOIN products AS p 
+                            WHERE i.id_product = p.id_product
+                            AND i.id_cart_item=?`;
+  connection.query(query_select_item, [id_cart_item],
     function (error, rows, fields) {
       if (error) {
         console.log(error);
-        res.status(500).json({ status: 500, message: "Internal Server Error" });
+        return res.status(500).json({ status: 500, message: "Internal Server Error" });
       } else {
         if (rows.length === 0) {
           return res
             .status(404)
             .json({ status: 404, message: "Cart item not found" });
         }
+  
+        if(rows[0].amount>rows[0].stock){
+          return res.status(400).json({ status: 400, message: "Max limit exceeded" });
+        }
+        
         const current_amount = parseInt(rows[0].amount);
         const total_amount = amount + current_amount;
 
