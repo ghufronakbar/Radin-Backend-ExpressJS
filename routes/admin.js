@@ -3,8 +3,8 @@
 // const verifikasi = require("./middleware/verifikasi");
 
 module.exports = function (app) {
-  let api_admin = require("../controllers/admin");  
-// asd
+  let api_admin = require("../controllers/admin");
+  // asd
   //LOGIN
 
   app.route(`/api/admin/login`)
@@ -81,17 +81,25 @@ module.exports = function (app) {
   app.route(`/api/admin/order/total/done`)
     .get(api_admin.statistic_controller.totalDone);
 
-    app.route(`/api/admin/order/total/income/today`)
+  app.route(`/api/admin/order/total/income/today`)
     .get(api_admin.statistic_controller.totalIncomeToday);
 
-    app.route(`/api/admin/order/total/income/month`)
+  app.route(`/api/admin/order/total/income/month`)
     .get(api_admin.statistic_controller.totalIncomeMonth);
 
-    app.route(`/api/admin/order/total/income/monthly`)
+  app.route(`/api/admin/order/total/income/monthly`)
     .get(api_admin.statistic_controller.totalIncomeMonthly);
 
-    app.route(`/api/admin/order/total/income/daily`)
+  app.route(`/api/admin/order/total/income/daily`)
     .get(api_admin.statistic_controller.totalIncomeDaily);
+
+
+  // INFORMATION CONTROLLER
+  app.route(`/api/admin/information`)
+    .get(api_admin.information_controller.infoPayment);
+
+  app.route(`/api/admin/information/edit`)
+    .put(api_admin.information_controller.editPaymnet);
 
 };
 

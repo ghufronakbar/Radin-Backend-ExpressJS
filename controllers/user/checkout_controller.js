@@ -102,7 +102,8 @@ exports.checkoutCart = async (req, res) => {
                                                         }
                                                         if (address) {
                                                             total = total + 5000 //SHIPPING COST
-                                                        }
+                                                        }const randomPrice = Math.floor(Math.random() * 100);
+                                                        total = total+randomPrice
                                                         const qTotalHistory = `UPDATE histories SET total=? WHERE id_history=?`
                                                         const vTotalHistory = [total, iHistory]
                                                         connection.query(qTotalHistory, vTotalHistory,
@@ -118,7 +119,17 @@ exports.checkoutCart = async (req, res) => {
                                                                                 console.log(error);
                                                                                 res.status(500).json({ status: 500, message: "Internal Server Error" });
                                                                             } else {
-                                                                                res.status(200).json({ status: 200, message: "Checkout Successfully" });
+                                                                                connection.query(`SELECT * FROM informations WHERE id_information=1`,
+                                                                                    (error, rr, result) => {
+                                                                                        if (error) {
+                                                                                            console.log(error);
+                                                                                            res.status(500).json({ status: 500, message: "Internal Server Error" });
+                                                                                        } else {
+                                                                                            const { bank_name, bank_account } = rr[0]
+                                                                                            res.status(200).json({ status: 200, message: "Checkout succesfully", bank_name, bank_account, total, iHistory });
+                                                                                        }
+                                                                                    }
+                                                                                )
                                                                             }
                                                                         }
                                                                     )
@@ -172,7 +183,7 @@ exports.cancelOrder = async (req, res) => {
         ":" +
         ("0" + now.getSeconds()).slice(-2);
     const id_history = req.params.id_history
-    connection.query(`UPDATE histories SET status=1, finished_at=? WHERE id_history=?`, [date_time,id_history],
+    connection.query(`UPDATE histories SET status=1, finished_at=? WHERE id_history=?`, [date_time, id_history],
         function (error, rows, result) {
             if (error) {
                 console.log(error);
