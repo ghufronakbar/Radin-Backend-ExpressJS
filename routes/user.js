@@ -73,8 +73,8 @@ module.exports = function (app) {
     .get(verifikasiUser, api_user.order_controller.orderPending);
 
   app
-    .route("/api/user/orders/pending")
-    .get(verifikasiUser, api_user.order_controller.orderPending);
+    .route("/api/user/orders/process")
+    .get(verifikasiUser, api_user.order_controller.orderProcess);
 
   app
     .route("/api/user/orders/cancel-by-user")

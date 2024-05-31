@@ -47,6 +47,23 @@ exports.orderPending = async (req, res) => {
     )
 }
 
+exports.orderProcess = async (req, res) => {
+    const id_user = req.decoded.id_user;
+    await connection.query(`SELECT * FROM histories WHERE id_user=? AND (status=3 OR status=4 OR status=5) ORDER BY ordered_at DESC`, [id_user],
+        function (error, rows, fields) {
+            if (error) {
+                console.log(error)
+            } else {
+                if (rows.length == 0) {
+                     res.json({status: 204, values:[]});
+                } else if(rows.length > 0){
+                    res.json({status:200, values:rows})                    
+                }
+            };
+        }
+    )
+}
+
 exports.orderCBU = async (req, res) => {
     const id_user = req.decoded.id_user;
     await connection.query(`SELECT * FROM histories WHERE id_user=? AND status=1`, [id_user],
