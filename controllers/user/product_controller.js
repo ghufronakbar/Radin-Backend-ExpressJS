@@ -36,6 +36,18 @@ exports.product_sembako = async (req, res) => {
     }
   );
 };
+exports.all_product_sembako = async (req, res) => {
+  await connection.query(
+    `SELECT * FROM products WHERE type=1 AND stock>0`,
+    function (error, rows, fields) {
+      if (error) {
+        console.log(error);
+      } else {
+        response.ok(rows, res);
+      }
+    }
+  );
+};
 
 exports.product_daging = async (req, res) => {
   await connection.query(
@@ -49,10 +61,34 @@ exports.product_daging = async (req, res) => {
     }
   );
 };
+exports.all_product_daging = async (req, res) => {
+  await connection.query(
+    `SELECT * FROM products WHERE type=2 AND stock>0`,
+    function (error, rows, fields) {
+      if (error) {
+        console.log(error);
+      } else {
+        response.ok(rows, res);
+      }
+    }
+  );
+};
 
 exports.product_buah = async (req, res) => {
   await connection.query(
     `SELECT * FROM products WHERE type=3 AND stock>0 ORDER BY RAND() LIMIT 4`,
+    function (error, rows, fields) {
+      if (error) {
+        console.log(error);
+      } else {
+        response.ok(rows, res);
+      }
+    }
+  );
+};
+exports.all_product_buah = async (req, res) => {
+  await connection.query(
+    `SELECT * FROM products WHERE type=3 AND stock>0`,
     function (error, rows, fields) {
       if (error) {
         console.log(error);

@@ -29,6 +29,16 @@ module.exports = function (app) {
 
   //PRODUCT CONTROLLER
   app
+    .route("/api/user/products/daging")
+    .get(verifikasiUser, api_user.product_controller.all_product_daging);
+  app
+    .route("/api/user/products/buah")
+    .get(verifikasiUser, api_user.product_controller.all_product_buah);
+  app
+    .route("/api/user/products/sembako")
+    .get(verifikasiUser, api_user.product_controller.all_product_sembako);
+
+  app
     .route("/api/user/products/recommended")
     .get(verifikasiUser, api_user.product_controller.product_recommended);
 
@@ -95,7 +105,7 @@ module.exports = function (app) {
     .get(verifikasiUser, api_user.cart_controller.cartUser);
 
   app
-    .route("/api/user/cart/item/setamount/:id_cart_item")
+    .route("/api/user/cart/item/setamount")
     .put(verifikasiUser, api_user.cart_controller.cartSetAmount);
 
   app
