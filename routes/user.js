@@ -5,6 +5,11 @@ const verifikasiUser = require("../middleware/verifikasi-user");
 module.exports = function (app) {
   let api_user = require("../controllers/user");
 
+  // INFORMATION CONTROLLER
+  app
+    .route(`/api/admin/information`)
+    .get(api_user.information_controller.infoPayment);
+
   // ACCOUNT CONTROLLER
 
   app.route(`/api/user/register`).post(api_user.account_controller.register);
