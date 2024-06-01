@@ -80,22 +80,31 @@ exports.cartSetAmount = async (req, res) => {
                             JOIN products AS p 
                             WHERE i.id_product = p.id_product
                             AND i.id_cart_item=?`;
-  connection.query(query_select_item, [id_cart_item],
+  connection.query(
+    query_select_item,
+    [id_cart_item],
     function (error, rows, fields) {
       if (error) {
         console.log(error);
-        return res.status(500).json({ status: 500, message: "Internal Server Error" });
+        return res
+          .status(500)
+          .json({ status: 500, message: "Internal Server Error" });
       } else {
         if (rows.length === 0) {
           return res
             .status(404)
             .json({ status: 404, message: "Cart item not found" });
         }
-  
-        if(rows[0].amount>rows[0].stock){
-          return res.status(400).json({ status: 400, message: "Max limit exceeded" });
+
+        if (amount > 0) {
+          if (rows[0].amount >= rows[0].stock) {
+            return res.status(400).json({
+              status: 400,
+              message: "Stok produk tidak memenuhi pesananmu",
+            });
+          }
         }
-        
+
         const current_amount = parseInt(rows[0].amount);
         const total_amount = amount + current_amount;
 
@@ -163,7 +172,11 @@ exports.addToCart = async (req, res) => {
   const id_user = req.decoded.id_user;
   const id_product = req.body.id_product;
 
-  const qValidation = `SELECT id_cart_item, amount FROM cart_items WHERE id_product=? AND id_cart=?`;
+  const qValidation = `SELECT i.id_cart_item, i.amount, p.stock 
+                        FROM cart_items AS i
+                        JOIN products AS p 
+                        WHERE i.id_product = p.id_product 
+                        AND p.id_product=? AND i.id_cart=?`;
   connection.query(
     qValidation,
     [id_product, id_user],
@@ -173,8 +186,15 @@ exports.addToCart = async (req, res) => {
         res.status(500).json({ status: 500, message: "Internal Server Error" });
       } else {
         const isProductExist = rows.length;
-
+        // if(amount>0){
+        // }
         if (isProductExist) {
+          if (rows[0].amount >= rows[0].stock) {
+            return res.status(400).json({
+              status: 400,
+              message: "Stok produk tidak memenuhi pesananmu",
+            });
+          }
           const id_cart_item = rows[0].id_cart_item;
           const amount = parseInt(rows[0].amount) + 1;
           const qIncrement = `UPDATE cart_items SET amount=? WHERE id_cart_item=?`;
