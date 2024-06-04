@@ -88,9 +88,6 @@ module.exports = function (app) {
     .route("/api/user/orders/paid")
     .get(verifikasiUser, api_user.order_controller.orderPaid);
 
-  // app
-  //   .route("/api/user/orders/process")
-  //   .get(verifikasiUser, api_user.order_controller.orderProcess);
 
   app
     .route("/api/user/orders/ready")

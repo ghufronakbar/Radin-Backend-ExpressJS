@@ -40,20 +40,19 @@ exports.products = function (req, res) {
             if (error) {
                 console.log(error)
             } else {
-                let results = [];
                 rows.forEach(row => {
                     let item = {
-                        id_product: row.id_product,
-                        product_name: row.product_name,
-                        type: row.type,
-                        information: row.information,
-                        picture: process.env.BASE_URL + `/images/product/` + row.picture,
-                        price: row.price,
-                        stock: row.stock
+                      id_product: row.id_product,
+                      product_name: row.product_name,
+                      type: row.type,
+                      information: row.information,
+                      picture: process.env.BASE_URL + `/images/menu/` + row.picture,
+                      price: row.price,
+                      stock: row.stock
                     };
                     results.push(item);
-                });
-                return res.status(200).json({ status: 200, values: results });
+                  });
+                  return res.status(200).json({ status: 200, values: results });
             };
         }
     )
@@ -67,20 +66,19 @@ exports.productId = function (req, res) {
             if (error) {
                 console.log(error)
             } else {
-                let results = [];
                 rows.forEach(row => {
                     let item = {
-                        id_product: row.id_product,
-                        product_name: row.product_name,
-                        type: row.type,
-                        information: row.information,
-                        picture: process.env.BASE_URL + `/images/product/` + row.picture,
-                        price: row.price,
-                        stock: row.stock
+                      id_product: row.id_product,
+                      product_name: row.product_name,
+                      type: row.type,
+                      information: row.information,
+                      picture: process.env.BASE_URL + `/images/menu/` + row.picture,
+                      price: row.price,
+                      stock: row.stock
                     };
                     results.push(item);
-                });
-                return res.status(200).json({ status: 200, values: results });
+                  });
+                  return res.status(200).json({ status: 200, values: results });
             };
         }
     )
@@ -164,7 +162,7 @@ exports.productEdit = function (req, res) {
                     if (previousPicture) {
                         try {
                             // Hapus gambar sebelumnya dari direktori
-                            fs.unlinkSync(`images/product/${previousPicture}`);
+                            fs.unlinkSync(`images/menu/${previousPicture}`);
                         } catch (err) {
                             // Tangani kesalahan jika file tidak ditemukan atau gagal dihapus
                             console.log('Failed to delete previous picture:', err);
@@ -196,17 +194,17 @@ exports.productSetStock = function (req, res) {
     let stock = req.body.stock
     let id_product = req.params.id_product
 
-    connection.query(`UPDATE products SET stock=? WHERE id_product=?`,
-        [stock, id_product],
-        function (error, rows, fields) {
-            if (error) {
-                console.log(error)
-            } else {
-                response.ok(rows, res);
-            };
-        }
-    )
-
+        connection.query(`UPDATE products SET stock=? WHERE id_product=?`,
+            [stock, id_product],
+            function (error, rows, fields) {
+                if (error) {
+                    console.log(error)
+                } else {
+                    response.ok(rows, res);
+                };
+            }
+        )
+    
 };
 
 
@@ -230,7 +228,7 @@ exports.productDelete = function (req, res) {
                     if (previousPicture) {
                         try {
                             // Hapus gambar sebelumnya dari direktori
-                            fs.unlinkSync(`images/product/${previousPicture}`);
+                            fs.unlinkSync(`images/menu/${previousPicture}`);
                         } catch (err) {
                             // Tangani kesalahan jika file tidak ditemukan atau gagal dihapus
                             console.log('Failed to delete previous picture:', err);
