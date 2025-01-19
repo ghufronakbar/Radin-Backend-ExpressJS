@@ -37,47 +37,48 @@ exports.cartUser = async (req, res) => {
   `;
 
   connection.query(query, [id_user], function (error, rows, fields) {
-      if (error) {
-          console.log(error);
-          res.status(500).json({ status: 500, message: "Internal Server Error" });
+    if (error) {
+      console.log(error);
+      res.status(500).json({ status: 500, message: "Internal Server Error" });
+    } else {
+      if (rows.length === 0) {
+        res
+          .status(204)
+          .json({ status: 204, message: "There's no item in cart" });
       } else {
-          if (rows.length === 0) {
-              res.status(204).json({ status: 204, message: "There's no item in cart" });
-          } else {
-              const result = {};
+        const result = {};
 
-              rows.forEach(row => {
-                  const { id_cart, id_user, ...item } = row;
-                  item.picture = `${process.env.BASE_URL}/images/product/${row.picture}`; // Modify picture URL
-                  item.checkoutable = item.stock; // Add checkoutable field based on status
+        rows.forEach((row) => {
+          const { id_cart, id_user, ...item } = row;
+          item.picture = `${process.env.BASE_URL}/images/product/${row.picture}`; // Modify picture URL
+          item.checkoutable = item.amount <= item.stock; // Add checkoutable field based on status
 
-                  if (!result[id_cart]) {
-                      result[id_cart] = {
-                          id_cart,
-                          id_user,
-                          checkoutable: true,
-                          cart_item: []
-                      };
-                  }
-
-                  // Add item to cart_item array
-                  result[id_cart].cart_item.push(item);
-
-                  // If any item is not checkoutable, set cart's checkoutable to false
-                  if (!item.checkoutable) {
-                      result[id_cart].checkoutable = false;
-                  }
-              });
-
-              res.status(200).json({
-                  status: 200,
-                  values: Object.values(result)
-              });
+          if (!result[id_cart]) {
+            result[id_cart] = {
+              id_cart,
+              id_user,
+              checkoutable: true,
+              cart_item: [],
+            };
           }
+
+          // Add item to cart_item array
+          result[id_cart].cart_item.push(item);
+
+          // If any item is not checkoutable, set cart's checkoutable to false
+          if (!item.checkoutable) {
+            result[id_cart].checkoutable = false;
+          }
+        });
+
+        res.status(200).json({
+          status: 200,
+          values: Object.values(result),
+        });
       }
+    }
   });
 };
-
 
 exports.cartSetAmount = async (req, res) => {
   const amount = parseInt(req.body.amount);
